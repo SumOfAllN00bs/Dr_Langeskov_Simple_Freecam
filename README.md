@@ -25,7 +25,9 @@ Dr. Langeskov, The Tiger, and The Terribly Cursed Emerald: A Whirlwind Heist Mod
 If everything worked then when you start Dr. Langeskov will have the following bindings:
 
 F5 = Toggle freecam
+F6 = Enable the disabled rooms
   
 IJKL to fly
 U to go up (except when you're looking down because I'm bad at programming)
 U to go down (except the same)
+shift to add speed to flying
