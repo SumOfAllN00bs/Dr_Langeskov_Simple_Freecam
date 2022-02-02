@@ -14,8 +14,8 @@ public class CoolGame : MonoBehaviour
 		this.TestGraphicsEvents();
 		this.freecamCamera = new GameObject();
 		this.freecamCamera.AddComponent<Camera>().enabled = false;
-		this.freecamSpeed = 4f;
-		this.freecamLook = 100f;
+		this.freecamSpeed = 5f;
+		this.freecamLook = 150f;
 		this.freecamRotationX = 0f;
 		this.freecamRotationY = 0f;
 	}
@@ -47,17 +47,6 @@ public class CoolGame : MonoBehaviour
 
 	private void Update()
 	{
-		// Find all the rooms and enable them
-		if (Input.GetKeyDown(KeyCode.F6))
-		{
-			foreach (GameObject gameObject in Resources.FindObjectsOfTypeAll<GameObject>())
-			{
-				if (gameObject.name.Contains("ITS THE"))
-				{
-					gameObject.SetActive(true);
-				}
-			}
-		}
 		// Toggle the freecam
 		if (Input.GetKeyDown(KeyCode.F5))
 		{
@@ -65,7 +54,7 @@ public class CoolGame : MonoBehaviour
 			if (this.freecamMode)
 			{
 				this.freecamCamera.transform.position = Camera.main.gameObject.transform.position;
-				this.freecamCamera.transform.eulerAngles = Camera.main.transform.eulerAngles;
+				this.freecamCamera.transform.eulerAngles = Camera.main.gameObject.transform.eulerAngles;
 				this.freecamMainCamera = Camera.main;
 				Camera.main.enabled = false;
 				this.freecamCamera.GetComponent<Camera>().enabled = true;
@@ -77,41 +66,59 @@ public class CoolGame : MonoBehaviour
 				this.freecamCamera.GetComponent<Camera>().enabled = false;
 			}
 		}
+		// Enable all the rooms
+		if (Input.GetKeyDown(KeyCode.F6))
+		{
+			foreach (GameObject gameObject in Resources.FindObjectsOfTypeAll<GameObject>())
+			{
+				if (gameObject.name.Contains("ITS THE"))
+				{
+					gameObject.SetActive(true);
+				}
+			}
+		}
 		if (this.freecamMode)
 		{
-			float mouseX = Input.GetAxis("Mouse X") * this.freecamLook * Time.deltaTime;
-			float mouseY = Input.GetAxis("Mouse Y") * this.freecamLook * Time.deltaTime;
-			this.freecamRotationX -= mouseY;
+			float num = Input.GetAxis("Mouse X") * this.freecamLook * Time.deltaTime;
+			float num2 = Input.GetAxis("Mouse Y") * this.freecamLook * Time.deltaTime;
+			this.freecamRotationX -= num2;
 			this.freecamRotationX = Mathf.Clamp(this.freecamRotationX, -90f, 90f);
-			this.freecamRotationY += mouseX;
+			this.freecamRotationY += num;
 			this.freecamCamera.transform.rotation = Quaternion.Euler(this.freecamRotationX, this.freecamRotationY, 0f);
-			Vector3 p_Velocity = default(Vector3);
+			Vector3 vector = default(Vector3);
 			if (Input.GetKey(KeyCode.I))
 			{
-				p_Velocity += new Vector3(0f, 0f, 1f);
+				vector += new Vector3(0f, 0f, 1f);
 			}
 			if (Input.GetKey(KeyCode.K))
 			{
-				p_Velocity += new Vector3(0f, 0f, -1f);
+				vector += new Vector3(0f, 0f, -1f);
 			}
 			if (Input.GetKey(KeyCode.J))
 			{
-				p_Velocity += new Vector3(-1f, 0f, 0f);
+				vector += new Vector3(-1f, 0f, 0f);
 			}
 			if (Input.GetKey(KeyCode.L))
 			{
-				p_Velocity += new Vector3(1f, 0f, 0f);
+				vector += new Vector3(1f, 0f, 0f);
 			}
 			if (Input.GetKey(KeyCode.U))
 			{
-				p_Velocity += new Vector3(0f, 1f, 0f);
+				vector += new Vector3(0f, 1f, 0f);
 			}
 			if (Input.GetKey(KeyCode.O))
 			{
-				p_Velocity += new Vector3(0f, -1f, 0f);
+				vector += new Vector3(0f, -1f, 0f);
 			}
-			p_Velocity = p_Velocity * Time.deltaTime * this.freecamSpeed;
-			this.freecamCamera.transform.Translate(p_Velocity);
+			if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+			{
+				vector = vector * Time.deltaTime * this.freecamSpeed * 3f;
+			}
+			else
+			{
+				vector = vector * Time.deltaTime * this.freecamSpeed;
+			}
+			this.freecamCamera.transform.Translate(vector);
 		}
 	}
 
