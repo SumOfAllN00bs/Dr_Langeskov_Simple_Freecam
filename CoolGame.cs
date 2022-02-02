@@ -47,6 +47,18 @@ public class CoolGame : MonoBehaviour
 
 	private void Update()
 	{
+		// Find all the rooms and enable them
+		if (Input.GetKeyDown(KeyCode.F6))
+		{
+			foreach (GameObject gameObject in Resources.FindObjectsOfTypeAll<GameObject>())
+			{
+				if (gameObject.name.Contains("ITS THE"))
+				{
+					gameObject.SetActive(true);
+				}
+			}
+		}
+		// Toggle the freecam
 		if (Input.GetKeyDown(KeyCode.F5))
 		{
 			this.freecamMode = !this.freecamMode;
